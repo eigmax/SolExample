@@ -7,13 +7,13 @@
 ## Test
 1. Compile and deploy metacoin
 ```
-cd demo1
+cd demo2
 truffle compile
 truffle migrate 
 ```
 
 2. Interact with private network
 ```
-cd demo2
+cd demo1
 ts-node hello.js
 ```
