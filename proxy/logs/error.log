@@ -1,0 +1,66 @@
+2021/08/20 23:12:04 [info] 32#32: *1 SSL_do_handshake() failed (SSL: error:14094418:SSL routines:ssl3_read_bytes:tlsv1 alert unknown ca:SSL alert number 48) while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:12:13 [info] 32#32: *2 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:14:25 [info] 32#32: *4 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:14:25 [info] 32#32: *5 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:14:40 [info] 32#32: *6 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:14:40 [info] 32#32: *7 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:16:35 [info] 32#32: *8 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:16:35 [info] 32#32: *9 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:16:38 [info] 32#32: *10 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:16:38 [info] 32#32: *11 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:18:01 [info] 32#32: *12 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:18:01 [info] 32#32: *13 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:18:48 [info] 32#32: *14 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:20:36 [info] 32#32: *15 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:20:49 [info] 32#32: *16 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:20:54 [info] 32#32: *17 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:21:05 [info] 32#32: *18 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:22:26 [info] 32#32: *19 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:23:00 [info] 32#32: *20 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:23:13 [info] 32#32: *22 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:24:14 [info] 31#31: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:24:15 [info] 31#31: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:24:39 [info] 31#31: *5 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:24:44 [info] 31#31: *7 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:24:50 [info] 31#31: *9 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:24:54 [info] 31#31: *11 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:24:58 [info] 31#31: *13 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:25:03 [info] 31#31: *15 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:25:36 [info] 31#31: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:25:36 [info] 31#31: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:25:59 [error] 32#32: *1 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: 43.128.80.242, request: "POST / HTTP/1.1", host: "localhost:8443"
+2021/08/20 23:25:59 [info] 32#32: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:25:59 [info] 32#32: *2 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:25:59 [info] 32#32: *4 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:26:12 [error] 32#32: *6 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: 43.128.80.242, request: "POST / HTTP/1.1", host: "localhost:8443"
+2021/08/20 23:26:12 [info] 32#32: *6 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:26:16 [info] 32#32: *7 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:32:58 [info] 31#31: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:32:58 [info] 31#31: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:32:58 [info] 31#31: *5 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:33:13 [info] 32#32: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:33:13 [info] 32#32: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:33:13 [info] 32#32: *5 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:33:40 [info] 32#32: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:33:40 [info] 32#32: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:34:06 [info] 32#32: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:34:06 [info] 32#32: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:35:34 [info] 32#32: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:35:34 [info] 32#32: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:37:37 [info] 32#32: *5 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:37:50 [info] 32#32: *7 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:38:31 [info] 32#32: *9 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:41:17 [info] 31#31: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:41:17 [info] 31#31: *2 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:41:34 [info] 31#31: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:41:34 [info] 31#31: *2 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:42:38 [info] 31#31: *1 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:42:38 [info] 31#31: *3 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:43:01 [info] 31#31: *5 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:43:01 [info] 31#31: *6 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:43:49 [info] 31#31: *7 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:43:49 [info] 31#31: *8 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:43:57 [info] 31#31: *9 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:43:57 [info] 31#31: *10 peer closed connection in SSL handshake while SSL handshaking, client: 127.0.0.1, server: 0.0.0.0:8443
+2021/08/20 23:44:25 [info] 31#31: *11 client 127.0.0.1 closed keepalive connection
+2021/08/20 23:44:25 [info] 31#31: *12 client 127.0.0.1 closed keepalive connection
