@@ -27,3 +27,6 @@ web3.eth.getBalance(process.env.WALLET_ADDRESS).then(console.log)
 web3.eth.getBlock( 'latest', true, function(error, result) {
     console.log(result) ;   
 });
+console.log(11)
+web3.eth.getChainId().then(console.log);
+console.log(12)
