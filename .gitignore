@@ -1,3 +1,7 @@
-*/node_modules
 **/node_modules
-*/build
+**/typechain
+**/build
+**/package-lock.json
+**/yarn.lock
+**/artifacts
+**/cache
