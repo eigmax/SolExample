@@ -50,13 +50,14 @@ function createNetworkConfig (network:string) {
     accounts: privateKeys,
     chainId: chainIds[network],
     url,
-    gas: 'auto',
-    gasPrice: 100,
-    gasLimit: 11111111
+    gas: 'auto'
   }
 }
 
 module.exports = {
+  mocha: {
+    timeout: 20000000
+  },
   defaultNetwork: 'hardhat',
   etherscan: {
     apiKey: process.env.SCAN_API_KEY

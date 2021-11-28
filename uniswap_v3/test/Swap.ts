@@ -23,14 +23,10 @@ import {
 import BigNumber from 'bignumber.js'
 BigNumber.config({ EXPONENTIAL_AT: 60 })
 
-import Web3 from 'web3'
-// @ts-ignore
-const web3 = new Web3(network.provider) as Web3
-
-  
 import { Token, Pool, Swap, Swap__factory  } from '../typechain'
 import { loadFixture } from 'ethereum-waffle'
 
+const overrides = { gasLimit: 1000000, gasPrice: 10 }
 let tokenA: Token
 let tokenB: Token
 let tokenC: Token
@@ -49,7 +45,7 @@ describe('Contract: Swap', () => {
         tokenB = await Token.deploy('Token_B', 'TKB') as Token
         tokenC = await Token.deploy('Token_C', 'TKC') as Token
 
-        if(Number(tokenA.address) > Number(tokenB.address)) {            
+        if(Number(tokenA.address) > Number(tokenB.address)) {
             let tmp = tokenB;
             tokenB = tokenA;
             tokenA = tmp
@@ -90,10 +86,10 @@ describe('Contract: Swap', () => {
             getMaxTick(3000),
             1000000000000,
             1000000000000,
-            {gasLimit: 1000000, gasPrice: 11}
+            overrides
             );
 
-        await pool.mintNewPosition(
+        let x = await pool.mintNewPosition(
             tokenB.address,
             tokenC.address, 
             3000,
@@ -101,10 +97,11 @@ describe('Contract: Swap', () => {
             getMaxTick(3000),
             1000000000000,
             1000000000000,
-            {gasLimit: 1000000, gasPrice: 11}
+            overrides
             );
-        await tokenA.transfer(user.address, 10000)
-        await tokenA.connect(user).approve( swap.address, 10000)
+        await x.wait()
+        await (await tokenA.transfer(user.address, 10000)).wait()
+        await tokenA.connect(user).approve(swap.address, 10000, overrides)
 	})
 
 	describe('Swap', () => {
@@ -115,7 +112,7 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 96,
-                {gasLimit: 1000000, gasPrice: 11}
+                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(
@@ -131,7 +128,7 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 105,
-                {gasLimit: 1000000, gasPrice: 11}
+                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(
@@ -149,13 +146,13 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 96,
-            {gasLimit: 1000000, gasPrice: 11}
+                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(
                 100,
                 96
-            )            
+            )
         })
 
         it('should swap exact output (multi swap)', async() => {
@@ -167,13 +164,13 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 108,
-            {gasLimit: 1000000, gasPrice: 11}
+                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(
                 104,
                 100
-            )             
+            )
         })
     })
 })

@@ -2,7 +2,8 @@
   "name": "hardhat",
   "scripts": {
     "compile": "npx hardhat compile",
-    "test": "rm -rf docs && npx hardhat test",
+    "test": "rm -rf docs && npx hardhat test --network dev",
+    "exec": "rm -rf docs && npx hardhat run scripts/deployAll.ts --network dev",
     "coverage": "npm run compile && npx hardhat coverage",
     "doc": "npx hardhat docgen"
   },
