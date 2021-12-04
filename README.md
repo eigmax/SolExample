@@ -20,3 +20,7 @@ ts-node hello.js
 
 ## Proxy
 [Proxy](./proxy) is a https reverse-proxy for Ethereum & Eigen miner.
+
+```math
+SE = \frac{\sigma}{\sqrt{n}}
+```
