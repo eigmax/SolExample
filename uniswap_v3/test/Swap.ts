@@ -26,7 +26,6 @@ BigNumber.config({ EXPONENTIAL_AT: 60 })
 import { Token, Pool, Swap, Swap__factory  } from '../typechain'
 import { loadFixture } from 'ethereum-waffle'
 
-const overrides = { gasLimit: 1000000, gasPrice: 10 }
 let tokenA: Token
 let tokenB: Token
 let tokenC: Token
@@ -86,7 +85,6 @@ describe('Contract: Swap', () => {
             getMaxTick(3000),
             1000000000000,
             1000000000000,
-            overrides
             );
 
         let x = await pool.mintNewPosition(
@@ -97,11 +95,10 @@ describe('Contract: Swap', () => {
             getMaxTick(3000),
             1000000000000,
             1000000000000,
-            overrides
             );
         await x.wait()
         await (await tokenA.transfer(user.address, 10000)).wait()
-        await tokenA.connect(user).approve(swap.address, 10000, overrides)
+        await tokenA.connect(user).approve(swap.address, 10000)
 	})
 
 	describe('Swap', () => {
@@ -112,7 +109,6 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 96,
-                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(
@@ -128,7 +124,6 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 105,
-                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(
@@ -146,7 +141,6 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 96,
-                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(
@@ -164,7 +158,6 @@ describe('Contract: Swap', () => {
                 3000,
                 100,
                 108,
-                overrides
             ))
             .to.emit(swap, 'SwapDone')
             .withArgs(

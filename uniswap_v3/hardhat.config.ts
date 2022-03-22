@@ -7,90 +7,18 @@ import 'solidity-coverage'
 import 'hardhat-docgen'
 import '@openzeppelin/hardhat-upgrades'
 import "@nomiclabs/hardhat-etherscan"
-
+import { task, HardhatUserConfig } from "hardhat/config";
 require('dotenv').config()
-require('./tasks')
 
-const chainIds: {[key:string]: number} = {
-  ganache: 1337,
-  dev: 44010,
-  goerli: 5,
-  hardhat: 31337,
-  kovan: 42,
-  mainnet: 1,
-  rinkeby: 4,
-  ropsten: 3
-}
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
 
-// Ensure that we have all the environment variables we need.
-/*
-let mnemonic: string
-if (!process.env.MNEMONIC) {
-  throw new Error('Please set your MNEMONIC in a .env file')
-} else {
-  mnemonic = process.env.MNEMONIC
-}
-*/
-
-let privateKeys = process.env.DEVNET_PRIVKEY?.split(",") || process.exit(-1);
-
-let infuraApiKey: string
-if (!process.env.INFURA_API_KEY) {
-  throw new Error('Please set your INFURA_API_KEY in a .env file')
-} else {
-  infuraApiKey = process.env.INFURA_API_KEY
-}
-
-function createNetworkConfig (network:string) {
-  let url = 'https://' + network + '.infura.io/v3/' + infuraApiKey
-  if (network == "dev") {
-      url = process.env.RPC || process.exit(-1)
+  for (const account of accounts) {
+    console.log(account.address);
   }
-  return {
-    accounts: privateKeys,
-    chainId: chainIds[network],
-    url,
-    gas: 'auto'
-  }
-}
+});
 
 module.exports = {
-  mocha: {
-    timeout: 20000000
-  },
-  defaultNetwork: 'hardhat',
-  etherscan: {
-    apiKey: process.env.SCAN_API_KEY
-  },
-  networks: {
-    mainnet: createNetworkConfig('mainnet'),
-    dev: createNetworkConfig('dev'),
-    goerli: createNetworkConfig('goerli'),
-    kovan: createNetworkConfig('kovan'),
-    rinkeby: createNetworkConfig('rinkeby'),
-    ropsten: createNetworkConfig('ropsten'),
-    bsc_testnet: {
-      url: 'https://data-seed-prebsc-1-s1.binance.org:8545/',
-      chainId: 97,
-      gasPrice: 'auto',
-      // gasLimit: 10000000,
-      //accounts: { mnemonic: mnemonic },
-      accounts : privateKeys
-    },
-    bsc: {
-      url: 'https://bsc-dataseed.binance.org/',
-      chainId: 56,
-      gasPrice: 'auto',
-      // gasLimit: 10000000,
-      accounts : privateKeys
-    }
-  },
-  paths: {
-    artifacts: './artifacts',
-    cache: './cache',
-    sources: './contracts',
-    tests: './test',
-  },
   solidity: {
     compilers: [
       {
@@ -108,5 +36,39 @@ module.exports = {
     path: './docs',
     clear: true,
     runOnCompile: true,
+  },
+  defaultNetwork: "ropsten",
+  networks: {
+    ropsten: {
+      url: "https://ropsten.infura.io/v3/" + process.env.INFURA_API_KEY,
+      accounts: [process.env.DEVNET_PRIVKEY]
+    },
+    metis: {
+      url: "https://stardust.metis.io/?owner=588",
+      accounts: [process.env.DEVNET_PRIVKEY]
+    },
+    tbsc: {
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      accounts: [process.env.DEVNET_PRIVKEY]
+    }, 
+    tpolygon: {
+      url: "https://rpc-mumbai.maticvigil.com/",
+      accounts: [process.env.DEVNET_PRIVKEY]
+    }
+  },
+  etherscan: {
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey: {
+      ropsten: 'SAD1R3W6UGG6AMMR3NIQ5HX9RUM1JGX4IU',
+    }
+  },
+  gasReporter: {
+    currency: 'USD',
+    gasPrice: 20,
+    token: 'ETH',
+    gasPriceApi: 'https://api.etherscan.io/api?module=proxy&action=eth_gasPrice',
+    coinmarketcap: 'f6673cc5-a673-4e07-8461-f7281a5de7d7',
+    onlyCalledMethods: false
   }
 }

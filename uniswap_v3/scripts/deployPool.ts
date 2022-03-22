@@ -3,10 +3,7 @@ import {ethers, run} from 'hardhat'
 import {delay} from '../utils'
 import { dotenv, fs } from "./imports";
 
-const envConfig = dotenv.parse(fs.readFileSync(".env"))
-	for (const k in envConfig) {
-		process.env[k] = envConfig[k]
-	}
+require('dotenv').config()
 
 const factory = process.env.UNISWAP_FACTORY as string;
 const manager = process.env.NONFUNGIBLE_MANAGER as string;
@@ -18,8 +15,6 @@ async function deployPool() {
 	console.log('Pool deployed with address: ' + pool.address)
 	console.log('wait of deploying...')
 	await pool.deployed()
-	console.log('wait of delay...')
-	await delay(25000)
 	console.log('starting verify pool...')
 	try {
 		await run('verify:verify', {
@@ -31,7 +26,6 @@ async function deployPool() {
 	} catch (e: any) {
 		console.log(e.message)
 	}
-
 }
 
 deployPool()

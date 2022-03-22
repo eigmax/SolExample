@@ -9,8 +9,6 @@ async function deployToken() {
 	console.log('MyToken deployed with address: ' + token.address)
 	console.log('wait of deploying...')
 	await token.deployed()
-	console.log('wait of delay...')
-	await delay(25000)
 	console.log('starting verify token...')
 	try {
 		await run('verify:verify', {

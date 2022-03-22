@@ -27,7 +27,6 @@ import { BigNumber, BigNumberish } from "ethers";
 
 bn.config({ EXPONENTIAL_AT: 999999, DECIMAL_PLACES: 40 });
 
-const overrides = { gasLimit: 1000000, gasPrice: 10 }
 // returns the sqrt price as a 64x96
 function encodePriceSqrt(
   reserve1: BigNumberish,
@@ -173,7 +172,6 @@ async function initAll() {
     getMaxTick(3000),
     1000000000000,
     1000000000000,
-    overrides
   )).wait();
 
   console.log("mintNewPosition B C")
@@ -185,11 +183,10 @@ async function initAll() {
     getMaxTick(3000),
     1000000000000,
     1000000000000,
-    overrides
   )).wait();
   console.log("approve user")
   await (await tokenA.transfer(user.address, 10000)).wait()
-  await tokenA.connect(user).approve(swap.address, 10000, overrides)
+  await tokenA.connect(user).approve(swap.address, 10000)
 }
 
 async function swapInAndOut() {
@@ -200,7 +197,6 @@ async function swapInAndOut() {
         3000,
         100,
         96,
-        overrides
     )
     await tx.wait()
     console.log("out")
@@ -211,7 +207,6 @@ async function swapInAndOut() {
         3000,
         100,
         105,
-        overrides
     )
     await tx.wait()
 }
