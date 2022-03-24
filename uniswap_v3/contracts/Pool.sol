@@ -12,7 +12,7 @@ import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol';
 import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol';
 
 contract Pool is IERC721Receiver{
-   
+
     struct Deposit {
         address owner;
         uint liquidity;
@@ -23,15 +23,15 @@ contract Pool is IERC721Receiver{
     }
 
     event PoolCreated (
-        address tokenA, 
-        address tokenB, 
+        address tokenA,
+        address tokenB,
         uint24 fee,
         uint160 price
     );
 
     event NFTMinted (
-        address pool, 
-        uint tokenId, 
+        address pool,
+        uint tokenId,
         uint liquidity
     );
 
@@ -65,8 +65,8 @@ contract Pool is IERC721Receiver{
     /// @param _fee The desired fee for the pool
     /// @param _price The initial sqrt price of the pool as a Q64.96
     function createPool(
-        address _tokenA, 
-        address _tokenB, 
+        address _tokenA,
+        address _tokenB,
         uint24 _fee,
         uint160 _price) external returns(address pool)
     {
@@ -85,8 +85,8 @@ contract Pool is IERC721Receiver{
     /// @param _tokenB The contract address of the second token
     /// @param _fee The fee tier of the pool
     function  getPoolAddress(
-        address _tokenA, 
-        address _tokenB, 
+        address _tokenA,
+        address _tokenB,
         uint24 _fee) public view returns(address pool)
     {
         pool =  PoolAddress.computeAddress(
@@ -103,8 +103,8 @@ contract Pool is IERC721Receiver{
     /// @param amountA The amount of tokenA
     /// @param amountB The amount of tokenB
     function mintNewPosition(
-        address _tokenA, 
-        address _tokenB, 
+        address _tokenA,
+        address _tokenB,
         uint24 _fee,
         int24 _tickLower,
         int24 _tickUpper,
@@ -118,7 +118,7 @@ contract Pool is IERC721Receiver{
 
         TransferHelper.safeApprove(_tokenA, address(nonfungiblePositionManager), amountA);
         TransferHelper.safeApprove(_tokenB, address(nonfungiblePositionManager), amountB);
-        
+
         // slippage 1%
         uint amountAMin = amountA*(1e3) - (amountA*(1e3)) / (1e2);
         uint amountBMin = amountB*(1e3) - (amountB*(1e3)) / (1e2);

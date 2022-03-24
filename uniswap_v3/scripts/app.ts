@@ -8,7 +8,7 @@ const provider = new ethers.providers.JsonRpcProvider(
 );
 
 // https://docs.uniswap.org/protocol/reference/deployments
-const poolAddress = "0xb575417bD7980aCe6619a0f3a42ecb56eF093f88";
+const poolAddress = "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8";
 
 const poolContract = new ethers.Contract(
   poolAddress,
