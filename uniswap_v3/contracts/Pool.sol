@@ -149,7 +149,7 @@ contract Pool is IERC721Receiver{
 
         address pool =  getPoolAddress(_tokenA, _tokenB, _fee);
         poolToDeposits[pool].push(tokenId);
-    
+
         if (amount0 < amountA) {
             TransferHelper.safeApprove(_tokenA, address(nonfungiblePositionManager), 0);
             TransferHelper.safeTransfer(_tokenA, msg.sender, amountA - amount0);
@@ -272,12 +272,37 @@ contract Pool is IERC721Receiver{
              ( , operator,tokenA ,tokenB, , , ,liquidity, , , owedA, owedB) = nonfungiblePositionManager.positions(_tokenId);
         }
 
+    // Implementing `onERC721Received` so this contract can receive custody of erc721 tokens
     function onERC721Received(
+        address operator,
         address,
-        address,
-        uint256,
+        uint256 tokenId,
         bytes calldata
     ) external override returns (bytes4) {
+        // get position information
+
+        _createDeposit(operator, tokenId);
+
         return this.onERC721Received.selector;
+    }
+
+    function _createDeposit(address owner, uint256 tokenId) internal {
+        (, , address token0, address token1, , , , uint128 liquidity, , , uint amountA, uint amountB) =
+            nonfungiblePositionManager.positions(tokenId);
+
+        // set the owner and data for position
+        // operator is msg.sender
+        deposits[tokenId] = Deposit({owner: owner, liquidity: liquidity, tokenA: token0, tokenB: token1, amountA: amountA, amountB: amountB});
+    }
+
+    /// @notice Transfers the NFT to the owner
+    /// @param tokenId The id of the erc721
+    function retrieveNFT(uint256 tokenId) external {
+        // must be the owner of the NFT
+        require(msg.sender == deposits[tokenId].owner, 'Not the owner');
+        // transfer ownership to original owner
+        nonfungiblePositionManager.safeTransferFrom(address(this), msg.sender, tokenId);
+        //remove information related to tokenId
+        delete deposits[tokenId];
     }
 }
