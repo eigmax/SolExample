@@ -10,9 +10,10 @@ import '@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol';
 import './libraries/TickMath.sol';
 import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol';
 import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol';
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Pool is IERC721Receiver{
-
+    using SafeMath for uint;
     struct Deposit {
         address owner;
         uint liquidity;
@@ -200,7 +201,7 @@ contract Pool is IERC721Receiver{
         deposits[_tokenId].liquidity += liquidity;
         deposits[_tokenId].amountA += amountA;
         deposits[_tokenId].amountB += amountB;
-        emit LiquidityAdded(amountA, amountB, liquidity);  
+        emit LiquidityAdded(amountA, amountB, liquidity);
     }
 
     /// @dev Decreases the amount of liquidity in a position
@@ -304,5 +305,15 @@ contract Pool is IERC721Receiver{
         nonfungiblePositionManager.safeTransferFrom(address(this), msg.sender, tokenId);
         //remove information related to tokenId
         delete deposits[tokenId];
+    }
+
+    function getPrice(address tokenIn, address tokenOut, uint24 _fee)
+        external
+        view
+        returns (uint256 price)
+    {
+        IUniswapV3Pool pool = IUniswapV3Pool(uniswapFactory.getPool(tokenIn, tokenOut, _fee));
+        (uint160 sqrtPriceX96,,,,,,) =  pool.slot0();
+        return uint(sqrtPriceX96).mul(uint(sqrtPriceX96)).mul(1e18) >> (96 * 2);
     }
 }

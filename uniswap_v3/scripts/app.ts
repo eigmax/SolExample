@@ -2,11 +2,9 @@ import { ethers } from "ethers";
 import { Pool } from "@uniswap/v3-sdk";
 import { Token } from "@uniswap/sdk-core";
 import { abi as IUniswapV3PoolABI } from "@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json";
+import { waffle } from "hardhat"
 
-const provider = new ethers.providers.JsonRpcProvider(
-  "https://mainnet.infura.io/v3/8f2ce165f78746f68d41a7b9f7f403dc"
-);
-
+const provider = waffle.provider;
 // https://docs.uniswap.org/protocol/reference/deployments
 const poolAddress = "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8";
 

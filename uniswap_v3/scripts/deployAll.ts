@@ -16,10 +16,6 @@ import {
   bytecode as NFT_MANAGER_BYTECODE,
 } from "@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json";
 
-import Web3 from "web3";
-// @ts-ignore
-const web3 = new Web3(network.provider) as Web3;
-
 import { Token, Pool, Swap, Swap__factory } from "../typechain";
 
 import bn from "bignumber.js";

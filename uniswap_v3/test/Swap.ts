@@ -56,8 +56,8 @@ describe('Contract: Swap', () => {
             tokenB = tmp
         }
 
-        let FACTORY = new ethers.ContractFactory(FACTORY_ABI,FACTORY_BYTECODE, admin);        
-		let factory  = await FACTORY.deploy() 
+        let FACTORY = new ethers.ContractFactory(FACTORY_ABI,FACTORY_BYTECODE, admin);
+		let factory  = await FACTORY.deploy()
 
         let NFT_MANAGER = new ethers.ContractFactory(NFT_MANAGER_ABI,NFT_MANAGER_BYTECODE, admin);  
 		let nft_manager  = await NFT_MANAGER.deploy(factory.address,token.address, token.address) 
@@ -65,7 +65,7 @@ describe('Contract: Swap', () => {
         let Pool = await ethers.getContractFactory('Pool')
 		pool = await Pool.deploy(factory.address, nft_manager.address) as Pool
 
-		let Router = new ethers.ContractFactory(ROUTER_ABI, ROUTER_BYTECODE, admin);        
+		let Router = new ethers.ContractFactory(ROUTER_ABI, ROUTER_BYTECODE, admin);
 		let router  = await Router.deploy(factory.address, token.address) 
 
         let Swap = await ethers.getContractFactory('Swap')
@@ -73,13 +73,13 @@ describe('Contract: Swap', () => {
 
         await pool.createPool(tokenA.address, tokenB.address, 3000,  encodePriceSqrt(1, 1))
         await pool.createPool(tokenC.address, tokenB.address, 3000,  encodePriceSqrt(1, 1))
-        await tokenA.approve( pool.address, 10000000000000)
-        await tokenB.approve( pool.address, 10000000000000)
-        await tokenC.approve( pool.address, 10000000000000)
+        await tokenA.approve(pool.address, 10000000000000)
+        await tokenB.approve(pool.address, 10000000000000)
+        await tokenC.approve(pool.address, 10000000000000)
 
         await pool.mintNewPosition(
             tokenA.address,
-            tokenB.address, 
+            tokenB.address,
             3000,
             getMinTick(3000),
             getMaxTick(3000),
@@ -89,7 +89,7 @@ describe('Contract: Swap', () => {
 
         let x = await pool.mintNewPosition(
             tokenB.address,
-            tokenC.address, 
+            tokenC.address,
             3000,
             getMinTick(3000),
             getMaxTick(3000),
