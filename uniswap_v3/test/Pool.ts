@@ -81,6 +81,20 @@ describe('Contract: Pool', () => {
 
         it('should create NFT position', async () => {
             const poolAddress = await pool.getPoolAddress(tokenA.address, tokenB.address, 3000)
+            /*
+            let tx = await pool.mintNewPosition(
+                tokenA.address,
+                tokenB.address, 
+                3000,
+                getMinTick(3000),
+                getMaxTick(3000),
+                1000,
+                1000
+            )
+            let receipt = await tx.wait();
+            let event = receipt.events?.pop();
+            console.log("event ", typeof(event), event?.args?.tokenId.toNumber())
+            */
             await expect(pool.mintNewPosition(
                 tokenA.address,
                 tokenB.address, 

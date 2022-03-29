@@ -1,7 +1,7 @@
 {
   "name": "hardhat",
   "scripts": {
-    "compile": "npx hardhat compile",
+    "build": "npx hardhat compile && ./node_modules/typescript/bin/tsc",
     "test": "rm -rf docs && npx hardhat test",
     "deploy": "rm -rf docs && npx hardhat run scripts/deployAll.ts",
     "coverage": "npm run compile && npx hardhat coverage",
@@ -41,6 +41,8 @@
     "@thanpolas/uniswap-chain-queries": "^0.1.1",
     "@thanpolas/univ3prices": "^3.0.2",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
-    "@uniswap/v3-periphery": "^1.3.0"
+    "@uniswap/v3-core": "^1.0.1",
+    "@uniswap/v3-periphery": "^1.3.0",
+    "@uniswap/v3-sdk": "^3.8.2"
   }
 }

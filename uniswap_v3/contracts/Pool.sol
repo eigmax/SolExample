@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity 0.8.0;
 pragma abicoder v2;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
@@ -7,6 +7,7 @@ import '@uniswap/v3-periphery/contracts/interfaces/INonfungiblePositionManager.s
 import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import '@uniswap/v3-periphery/contracts/libraries/PoolAddress.sol';
 import '@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol';
+import './libraries/OracleLibrary.sol';
 import './libraries/TickMath.sol';
 import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol';
 import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol';
@@ -315,5 +316,10 @@ contract Pool is IERC721Receiver{
         IUniswapV3Pool pool = IUniswapV3Pool(uniswapFactory.getPool(tokenIn, tokenOut, _fee));
         (uint160 sqrtPriceX96,,,,,,) =  pool.slot0();
         return uint(sqrtPriceX96).mul(uint(sqrtPriceX96)).mul(1e18) >> (96 * 2);
+    }
+
+    function getQuote(address tokenA, uint amountA, address tokenB, uint24 fee) public view returns (uint256 amountB) {
+        (int24 tick, uint128 harminicMeanLiquidity) = OracleLibrary.consult(uniswapFactory.getPool(tokenA, tokenB, fee), 60);
+        return OracleLibrary.getQuoteAtTick(tick, uint128(amountA), tokenA, tokenB);
     }
 }
