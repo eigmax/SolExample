@@ -46,7 +46,7 @@ describe('Contract: Pool', () => {
         }
 
         let FACTORY = new ethers.ContractFactory(FACTORY_ABI, FACTORY_BYTECODE, admin);
-        let factory  = await FACTORY.deploy() 
+        let factory  = await FACTORY.deploy()
 
         let NFT_MANAGER = new ethers.ContractFactory(NFT_MANAGER_ABI, NFT_MANAGER_BYTECODE, admin);  
         let nft_manager  = await NFT_MANAGER.deploy(factory.address, token_descriptor.address, token_descriptor.address) 

@@ -21,9 +21,9 @@ const {
 } = require('@thanpolas/uniswap-chain-queries');
 
 const FEES = {
-  LOW: 500,
-  MEDIUM: 3000,
-  HIGH: 10000,
+    LOW: 500,
+    MEDIUM: 3000,
+    HIGH: 10000,
 };
 const FEE_DECIMALS = 10000;
 let admin
@@ -32,8 +32,9 @@ const main = async () => {
 
     // https://github.com/Uniswap/v3-periphery/blob/main/deploys.md
     [admin] = await ethers.getSigners()
+    console.log("Signer", admin.address)
 
-    console.log(PoolABI.abi)
+    //console.log(PoolABI.abi)
     // Uniswap V3 Factory on mainsted
     const factoryAddress = process.env.UNISWAP_FACTORY;
 
@@ -71,7 +72,6 @@ const main = async () => {
     //const price = univ3prices([token0.decimals, token1.decimals], sqrtPrice).toAuto();
     //console.log(price);
 
-    /*
     const poolFac = await ethers.getContractFactory('Pool')
     const pool = await poolFac.deploy(
         process.env.UNISWAP_FACTORY,
@@ -80,24 +80,10 @@ const main = async () => {
     await pool.deployed()
     console.log("pool.address", pool.address)
 
-    // 1. get or create pool
-    const poolAddr = await pool.getPoolAddress(
-        token0.address,
-        token1.address,
-        FEES.MEDIUM,
-    );
-    console.log(poolAddr)
-    */
-   const pool = new ethers.Contract(
-       currentBestPair.lpAddress,
-       PoolABI.abi,
-       waffle.provider
-   ) as Pool;
-
     let amountA = 2000
     let amountB = 2000
-    const tokenA = new ethers.Contract(token0.address, ERC20ABI.abi, waffle.provider)
-    const tokenB = new ethers.Contract(token1.address, ERC20ABI.abi, waffle.provider)
+    const tokenA = new ethers.Contract(token0.address, ERC20ABI.abi, admin)
+    const tokenB = new ethers.Contract(token1.address, ERC20ABI.abi, admin)
     let balanceA = await tokenA.balanceOf(admin.address)
     let balanceB = await tokenB.balanceOf(admin.address)
     console.log("Balance A, B", balanceA.toString(), balanceB.toString())
@@ -111,6 +97,7 @@ const main = async () => {
         amountA,
         amountB,
     )
+    console.log("mintNewPosition", tx)
 
     // read minted tokenId
     let receipt = await tx.wait();
