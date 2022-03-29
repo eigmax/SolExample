@@ -52,7 +52,7 @@ const main = async () => {
 
     console.log(lpAddresses);
 
-    // get the details of the pool and find the best price, just for demo
+    // get the details of the pool and find the best fee, just for demo
     let currentBestPair
     for (let lpAddress of lpAddresses) {
         const tokenPairPrice = await getPriceUniswapV3(lpAddress, waffle.provider, [18, 18]);
@@ -63,6 +63,8 @@ const main = async () => {
         }
         console.log(tokenPairPrice)
     }
+    const fee = currentBestPair.fee * FEE_DECIMALS
+    console.log(fee)
 
     // get the token information from the pool
     const token0 = await getToken(tokenPair[0], waffle.provider)
