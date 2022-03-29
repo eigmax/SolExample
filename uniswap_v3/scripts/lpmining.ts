@@ -4,6 +4,8 @@ const dotenv = require('dotenv')
 const fs = require('fs')
 require('dotenv').config()
 import { getMaxTick, getMinTick } from '../test/shared/ticks'
+const PoolABI = require("../artifacts/contracts/Pool.sol/Pool.json");
+const ERC20ABI = require("../artifacts/contracts/Token.sol/Token.json")
 
 const univ3prices = require('@thanpolas/univ3prices');
 
@@ -31,6 +33,7 @@ const main = async () => {
     // https://github.com/Uniswap/v3-periphery/blob/main/deploys.md
     [admin] = await ethers.getSigners()
 
+    console.log(PoolABI.abi)
     // Uniswap V3 Factory on mainsted
     const factoryAddress = process.env.UNISWAP_FACTORY;
 
@@ -48,7 +51,7 @@ const main = async () => {
 
     console.log(lpAddresses);
 
-    // get the details of the pool and find the best price
+    // get the details of the pool and find the best price, just for demo
     let currentBestPair
     for (let lpAddress of lpAddresses) {
         const tokenPairPrice = await getPriceUniswapV3(lpAddress, waffle.provider, [18, 18]);
@@ -63,10 +66,12 @@ const main = async () => {
     // get the token information from the pool
     const token0 = await getToken(tokenPair[0], waffle.provider)
     const token1 = await getToken(tokenPair[1], waffle.provider)
-    console.log(token0.decimals, token1.decimals)
+    console.log(token0)
     //const sqrtPrice = 10000
     //const price = univ3prices([token0.decimals, token1.decimals], sqrtPrice).toAuto();
     //console.log(price);
+
+    /*
     const poolFac = await ethers.getContractFactory('Pool')
     const pool = await poolFac.deploy(
         process.env.UNISWAP_FACTORY,
@@ -82,11 +87,22 @@ const main = async () => {
         FEES.MEDIUM,
     );
     console.log(poolAddr)
+    */
+   const pool = new ethers.Contract(
+       currentBestPair.lpAddress,
+       PoolABI.abi,
+       waffle.provider
+   ) as Pool;
 
     let amountA = 2000
     let amountB = 2000
+    const tokenA = new ethers.Contract(token0.address, ERC20ABI.abi, waffle.provider)
+    const tokenB = new ethers.Contract(token1.address, ERC20ABI.abi, waffle.provider)
+    let balanceA = await tokenA.balanceOf(admin.address)
+    let balanceB = await tokenB.balanceOf(admin.address)
+    console.log("Balance A, B", balanceA.toString(), balanceB.toString())
     // 2. mint new position
-    let tx = await pool.mintNewPosition(
+    let tx = await pool.connect(admin).mintNewPosition(
         token0.address,
         token1.address,
         FEES.MEDIUM,
@@ -129,12 +145,12 @@ const main = async () => {
     console.log("decreaseLiquidity", event)
 
     // 5. receive fee
-    const balanceA = await token0.balanceOf(admin.address)
-    const balanceB = await token0.balanceOf(admin.address)
+    balanceA = await tokenA.balanceOf(admin.address)
+    balanceB = await tokenB.balanceOf(admin.address)
     let res = await pool.receiveFees(tokenId)
     await res.wait()
-    console.log(token0.balnaceOf(admin.address))
-    console.log(token1.balnaceOf(admin.address))
+    console.log(tokenA.balnaceOf(admin.address))
+    console.log(tokenB.balnaceOf(admin.address))
 }
 
 main().then(() => {
