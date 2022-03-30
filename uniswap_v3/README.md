@@ -2,6 +2,7 @@
 
 1. initialize context
 ```
+yarn && yarn build
 cp .env.sample .emv
 npx hardhat node
 ```
