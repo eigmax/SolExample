@@ -4,6 +4,15 @@ const fs = require('fs')
 import { encodePriceSqrt } from '../test/shared/encodePriceSqrt'
 import { getMaxTick, getMinTick } from '../test/shared/ticks'
 
+const {
+    getToken,
+    getLPTokensData,
+    getLPTokensDataByLpAddress,
+    getPriceUniswapV3,
+    queryFactoryForLPUniV3,
+
+} = require('@thanpolas/uniswap-chain-queries');
+
 const pool = process.env.POOL as string;
 const tokenA = process.env.TOKEN_A as string;
 const tokenB = process.env.TOKEN_B as string;
@@ -72,10 +81,37 @@ task('receive', 'Decreases liquidity')
 	})
 
 task('getPoolAddress', 'Returns the position of deposit')
-	.setAction(async ({  }, { ethers }) => {
+	.addParam('tokena', 'The tokenA of the liquidity pool')
+	.addParam('tokenb', 'The tokenB of the liquidity pool')
+	.setAction(async ({ tokena, tokenb, fee }, { ethers }) => {
+        //get all the pools for the given token pair
+        const lpAddresses = await queryFactoryForLPUniV3(
+            process.env.UNISWAP_FACTORY,
+            ethers.provider,
+            [tokena, tokenb],
+        );
+
+        const token0 = await getToken(tokena, ethers.provider)
+        const token1 = await getToken(tokenb, ethers.provider)
+        // get the details of the pool and find the best fee, just for demo
+        let currentBestPair
+        for (let lpAddress of lpAddresses) {
+            const tokenPairPrice = await getPriceUniswapV3(
+                lpAddress, ethers.provider, [token0.decimals, token1.decimals]);
+            // this is useless, we'll deposit more
+            if (currentBestPair == undefined) {
+                currentBestPair = tokenPairPrice
+            } else if (currentBestPair.price > tokenPairPrice) {
+                currentBestPair = tokenPairPrice
+            }
+            console.log(tokenPairPrice)
+        }
+
+        const bestFee = Number(currentBestPair.fee.slice(0, -1)) * 10000;
+        console.log("current the best fee is ", bestFee)
 		const contract = await ethers.getContractAt('Pool', pool)
-		const id = await contract.getPoolAddress(tokenA, tokenB, fee);
-		console.log(id);	
+		const poolAddress = await contract.getPoolAddress(tokena, tokenb, bestFee);
+		console.log("Pool Address: ", poolAddress);	
 	})
 
 task('getDepositInfo', 'Returns the position of deposit')
