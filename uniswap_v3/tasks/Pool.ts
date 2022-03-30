@@ -83,14 +83,16 @@ task('receive', 'Decreases liquidity')
 task('getPoolAddress', 'Returns the position of deposit')
 	.addParam('tokena', 'The tokenA of the liquidity pool')
 	.addParam('tokenb', 'The tokenB of the liquidity pool')
-	.setAction(async ({ tokena, tokenb, fee }, { ethers }) => {
+	.addParam('high', 'The highest price or lowest price')
+	.setAction(async ({ tokena, tokenb, high }, { ethers }) => {
         //get all the pools for the given token pair
         const lpAddresses = await queryFactoryForLPUniV3(
             process.env.UNISWAP_FACTORY,
             ethers.provider,
             [tokena, tokenb],
         );
-
+        let isHigh = high == "1" || high == "y";
+        console.log("isHigh", isHigh)
         const token0 = await getToken(tokena, ethers.provider)
         const token1 = await getToken(tokenb, ethers.provider)
         // get the details of the pool and find the best fee, just for demo
@@ -101,8 +103,13 @@ task('getPoolAddress', 'Returns the position of deposit')
             // this is useless, we'll deposit more
             if (currentBestPair == undefined) {
                 currentBestPair = tokenPairPrice
-            } else if (currentBestPair.price > tokenPairPrice) {
-                currentBestPair = tokenPairPrice
+            } else {
+                if (isHigh && currentBestPair.price < tokenPairPrice.price) {
+                    currentBestPair = tokenPairPrice
+                }
+                if (!isHigh && currentBestPair.price > tokenPairPrice.price) {
+                    currentBestPair = tokenPairPrice
+                }
             }
             console.log(tokenPairPrice)
         }

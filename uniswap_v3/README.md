@@ -16,10 +16,12 @@ npx hardhat run scripts/deployAll.ts --network localhost
 Or you can find an existing pool to add your liquidity by
 
 ```
-npx hardhat getPoolAddress --network localhost --tokena ${tokenA} --tokenb ${tokenB}
+npx hardhat getPoolAddress --network localhost --tokena ${tokenA} --tokenb ${tokenB} --high 1
 ```
 where fee can be calculated by querying the best price with [uniswap-chain-queries](https://github.com/thanpolas/uniswap-chain-queries).
 And the `tickPrice` is the marginal price of current tick.
+
+`--high` can be set 1 or y if you want to choose the highest price.
 
 3. update `.env` with above factory, router, NFT manager, token A, B, C, pool and swap.
 
