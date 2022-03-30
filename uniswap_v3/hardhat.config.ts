@@ -18,6 +18,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
+require("./tasks/index");
+
 module.exports = {
   solidity: {
     compilers: [
@@ -54,7 +56,7 @@ module.exports = {
     tbsc: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       accounts: [process.env.DEVNET_PRIVKEY]
-    }, 
+    },
     tpolygon: {
       url: "https://rpc-mumbai.maticvigil.com/",
       accounts: [process.env.DEVNET_PRIVKEY]

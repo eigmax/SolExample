@@ -13,7 +13,7 @@ contract Token is ERC20, AccessControl {
         _mint(msg.sender, 10000000 * (10 ** uint(decimals())));
         _setupRole(ADMIN, msg.sender);
         _setRoleAdmin(MINTER, ADMIN);
-        _setRoleAdmin(BURNER, ADMIN);      
+        _setRoleAdmin(BURNER, ADMIN);
     }
 
     function mint(address _to, uint _value) onlyRole(MINTER) public {

@@ -1,6 +1,5 @@
 import { types } from 'hardhat/config'
 import { waffle, ethers, network } from "hardhat";
-const dotenv = require('dotenv')
 const fs = require('fs')
 require('dotenv').config()
 import { getMaxTick, getMinTick } from '../test/shared/ticks'
@@ -42,6 +41,11 @@ const main = async () => {
         '0xaD6D458402F60fD3Bd25163575031ACDce07538D', // DAI
         '0xc778417E063141139Fce010982780140Aa0cD5Ab', // WETH
     ];
+    // get the token information from the pool
+    const token0 = await getToken(tokenPair[0], waffle.provider)
+    const token1 = await getToken(tokenPair[1], waffle.provider)
+    console.log(token0)
+    console.log(token1)
 
     //get all the pools for the given token pair
     const lpAddresses = await queryFactoryForLPUniV3(
@@ -51,11 +55,19 @@ const main = async () => {
     );
 
     console.log(lpAddresses);
+    let amountA = 100
+    let amountB = 2
 
     // get the details of the pool and find the best fee, just for demo
     let currentBestPair
     for (let lpAddress of lpAddresses) {
-        const tokenPairPrice = await getPriceUniswapV3(lpAddress, waffle.provider, [18, 18]);
+        const tokenPairPrice = await getPriceUniswapV3(
+            lpAddress, waffle.provider, [token0.decimals, token1.decimals]);
+        // this is useless, we'll deposit more
+        if (Number(tokenPairPrice.token0Reserves) < amountA ||
+            Number(tokenPairPrice.token1Reserves) < amountB) {
+            continue
+        }
         if (currentBestPair == undefined) {
             currentBestPair = tokenPairPrice
         } else if (currentBestPair.price > tokenPairPrice) {
@@ -63,13 +75,15 @@ const main = async () => {
         }
         console.log(tokenPairPrice)
     }
-    const fee = currentBestPair.fee * FEE_DECIMALS
-    console.log(fee)
 
-    // get the token information from the pool
-    const token0 = await getToken(tokenPair[0], waffle.provider)
-    const token1 = await getToken(tokenPair[1], waffle.provider)
-    console.log(token0)
+    if (currentBestPair == undefined) {
+        console.log("Can not find the ")
+        process.exit(-1)
+    }
+
+    const fee = Number(currentBestPair.fee.slice(0, -1)) * FEE_DECIMALS
+    console.log("fee", fee)
+
     //const sqrtPrice = 10000
     //const price = univ3prices([token0.decimals, token1.decimals], sqrtPrice).toAuto();
     //console.log(price);
@@ -82,8 +96,6 @@ const main = async () => {
     await pool.deployed()
     console.log("pool.address", pool.address)
 
-    let amountA = 2000
-    let amountB = 2000
     const tokenA = new ethers.Contract(token0.address, ERC20ABI.abi, admin)
     const tokenB = new ethers.Contract(token1.address, ERC20ABI.abi, admin)
     let balanceA = await tokenA.balanceOf(admin.address)
@@ -93,7 +105,7 @@ const main = async () => {
     let tx = await pool.connect(admin).mintNewPosition(
         token0.address,
         token1.address,
-        FEES.MEDIUM,
+        fee,
         getMinTick(3000),
         getMaxTick(3000),
         amountA,
