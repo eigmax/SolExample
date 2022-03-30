@@ -63,4 +63,8 @@ npx hardhat receive --network localhost --id 4
 
 ```
 npx hardhat swapExactInputSingle --network localhost --amountin 10000 --amountmin 1000
+...
 ```
+
+## TODO
+1. Flash & Flashswap
