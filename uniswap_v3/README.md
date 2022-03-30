@@ -19,9 +19,9 @@ Or you can find an existing pool to add your liquidity by
 npx hardhat getPoolAddress --network localhost --tokena ${tokenA} --tokenb ${tokenB}
 ```
 where fee can be calculated by querying the best price with [uniswap-chain-queries](https://github.com/thanpolas/uniswap-chain-queries).
-and the `tickPrice` is the marginal price of current tick.
+And the `tickPrice` is the marginal price of current tick.
 
-3. update `.env` with above token A, B, C, pool and swap.
+3. update `.env` with above factory, router, NFT manager, token A, B, C, pool and swap.
 
 4. mine by providing liquidity
 
