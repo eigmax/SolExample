@@ -21,7 +21,7 @@ contract Factory {
             ))
         )))));
 
-        address dest = address(new TestContract{salt: _salt, value: msg.value}(_owner, _foo));
+        address dest = address(new TestContract{salt: _salt, value: msg.value, sender: msg.sender}(_owner, _foo));
         require(address(dest) == predictedAddress);
         emit Deployed(dest, _salt);
         return dest;
