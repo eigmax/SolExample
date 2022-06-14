@@ -11,7 +11,18 @@ contract Factory {
     ) public payable returns (address) {
         // This syntax is a newer way to invoke create2 without assembly, you just need to pass salt
         // https://docs.soliditylang.org/en/latest/control-structures.html#salted-contract-creations-create2
+        address predictedAddress = address(uint160(uint(keccak256(abi.encodePacked(
+            bytes1(0xff),
+            address(this),
+            _salt,
+            keccak256(abi.encodePacked(
+                type(TestContract).creationCode,
+                abi.encode(_owner, _foo)
+            ))
+        )))));
+
         address dest = address(new TestContract{salt: _salt, value: msg.value}(_owner, _foo));
+        require(address(dest) == predictedAddress);
         emit Deployed(dest, _salt);
         return dest;
     }
